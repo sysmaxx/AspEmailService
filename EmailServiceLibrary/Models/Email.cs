@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
+using System.Text;
 
 namespace EmailServiceLibrary.Models
 {
@@ -12,5 +13,6 @@ namespace EmailServiceLibrary.Models
         public string Body { get; set; }
         public IList<IFormFile> Attachments { get; set; }
         public bool IsHTML { get; set; } = false;
+        public Encoding Encoding { get; set; } = Encoding.UTF8;
     }
 }
