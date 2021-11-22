@@ -11,6 +11,5 @@ namespace Helper
             Credentials = new NetworkCredential(_options.Account, _options.Password),
             EnableSsl = _options.Security
         };
-
     }
 }

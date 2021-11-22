@@ -23,19 +23,8 @@ namespace EmailServiceLibrary.Services
 
         public async Task SendEmailAsync(Email email, CancellationToken cancellationToken = default)
         {
-            // ToDo validate model
-
-            // ToDo move to model
-            if (email.From.IsNullOrEmpty())
-                email.From = _options.Email;
-
-            // ToDo move to model
-            if (email.DisplayName.IsNullOrEmpty())
-                email.DisplayName = _options.DisplayName;
-
-            var mail = email.ToMailMessage();
-
-            await _smtpClient.SendMailAsync(mail, cancellationToken)
+            await _smtpClient
+                .SendMailAsync(email.ToMailMessage(_options), cancellationToken)
                 .ConfigureAwait(false);
         }
 

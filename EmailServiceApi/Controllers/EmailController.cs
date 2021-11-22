@@ -1,5 +1,6 @@
 ﻿using EmailServiceLibrary.Models;
 using EmailServiceLibrary.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -20,15 +21,18 @@ namespace AspEmailService.Controllers
             _emailService = emailService ?? throw new ArgumentNullException(nameof(emailService));
         }
 
-        [HttpGet("/send")]
-        public async Task SendMail(CancellationToken cancellationToken)
+        [HttpPost("/send")]
+        public async Task SendMail(IFormFile file, CancellationToken cancellationToken)
         {
+
+            // ToDo Add DTO + validation
 
             var mail = new Email
             {
-                To =  new List<string> { "tt@tt.de" },
+                To =  new List<string> { "m.herkt@secret.net" },
                 Subject = "Testmail",
                 Body = "Just a short test",
+                Attachments = new List<IFormFile> { file }
             };
 
             await _emailService.SendEmailAsync(mail, cancellationToken)
