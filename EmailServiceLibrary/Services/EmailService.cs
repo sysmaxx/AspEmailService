@@ -1,4 +1,5 @@
-﻿using EmailServiceLibrary.Models;
+﻿using EmailServiceLibrary.Extensions;
+using EmailServiceLibrary.Models;
 using Microsoft.Extensions.Options;
 using System;
 using System.Net.Mail;
@@ -15,19 +16,27 @@ namespace EmailServiceLibrary.Services
 
         public EmailService(IOptions<EmailServiceOptions> options)
         {
+            // ToDo validate cfg
             _options = options.Value ?? throw new ArgumentNullException(nameof(options));
             _smtpClient = CreateSmtpClient(_options);
         }
 
         public async Task SendEmailAsync(Email email, CancellationToken cancellationToken = default)
         {
+            // ToDo validate model
 
+            // ToDo move to model
+            if (email.From.IsNullOrEmpty())
+                email.From = _options.Email;
 
+            // ToDo move to model
+            if (email.DisplayName.IsNullOrEmpty())
+                email.DisplayName = _options.DisplayName;
 
-            await _smtpClient.SendMailAsync(
-                _options.Email, "max@secret.email", "ASP Test Mail", "Nothing here")
+            var mail = email.ToMailMessage();
+
+            await _smtpClient.SendMailAsync(mail, cancellationToken)
                 .ConfigureAwait(false);
-
         }
 
 

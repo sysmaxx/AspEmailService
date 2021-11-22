@@ -1,6 +1,9 @@
-﻿using EmailServiceLibrary.Services;
+﻿using EmailServiceLibrary.Models;
+using EmailServiceLibrary.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace AspEmailService.Controllers
@@ -18,10 +21,18 @@ namespace AspEmailService.Controllers
         }
 
         [HttpGet("/send")]
-        public async Task SendMail()
+        public async Task SendMail(CancellationToken cancellationToken)
         {
-            // Do something...
-            await _emailService.SendEmailAsync(null);
+
+            var mail = new Email
+            {
+                To =  new List<string> { "tt@tt.de" },
+                Subject = "Testmail",
+                Body = "Just a short test",
+            };
+
+            await _emailService.SendEmailAsync(mail, cancellationToken)
+                .ConfigureAwait(false);
         }
 
     }

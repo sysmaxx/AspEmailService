@@ -1,6 +1,6 @@
 ﻿namespace EmailServiceLibrary.Models
 {
-    public class EmailServiceOptions
+    public record EmailServiceOptions
     {
         /// <summary>
         /// SMTP Server Adress
@@ -21,13 +21,13 @@
         /// <summary>
         /// Senders Name
         /// </summary>
-        public string Password { get; set; }
-        /// <summary>
-        /// Use SSL or TLS
-        /// </summary>
         public string DisplayName { get; set; }
         /// <summary>
         /// Senders Password
+        /// </summary>
+        public string Password { get; set; }
+        /// <summary>
+        /// Use SSL or TLS
         /// </summary>
         public bool Security { get; set; } = false;
     }
