@@ -1,5 +1,7 @@
 ﻿using EmailServiceLibrary.Extensions;
 using EmailServiceLibrary.Models;
+using EmailServiceLibrary.Validators;
+using FluentValidation;
 using Microsoft.Extensions.Options;
 using System;
 using System.Net.Mail;
@@ -14,10 +16,12 @@ namespace EmailServiceLibrary.Services
         private readonly EmailServiceOptions _options;
         private readonly SmtpClient _smtpClient;
 
-        public EmailService(IOptions<EmailServiceOptions> options)
+        public EmailService(IOptions<EmailServiceOptions> settings)
         {
-            // ToDo validate cfg
-            _options = options.Value ?? throw new ArgumentNullException(nameof(options));
+            _options = settings.Value ?? throw new ArgumentNullException(nameof(settings));
+
+            EmailServiceOptionsValidator.ThrowOnFailures(_options);
+
             _smtpClient = CreateSmtpClient(_options);
         }
 
@@ -31,7 +35,7 @@ namespace EmailServiceLibrary.Services
 
         public void Dispose()
         {
-            if (_smtpClient is not null)
+            if (_smtpClient is not null) 
                 _smtpClient.Dispose();
         }
 
